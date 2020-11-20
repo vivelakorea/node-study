@@ -1,0 +1,3 @@
+공개된문서
+Lorem 뭐시기
+localhost:3000/publicText.txt

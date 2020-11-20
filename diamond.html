@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      const diamond = (context, n, x, y, r, color) => {
+        context.strokeStyle = color;
+        context.beginPath();
+        for (let i = 0; i < n; i++) {
+          const theta1 = (i * 2 * Math.PI) / n;
+          for (let j = i + 1; j < n; j++) {
+            const theta2 = (j * 2 * Math.PI) / n;
+            context.moveTo(x + r * Math.cos(theta1), y + r * Math.sin(theta1));
+            context.lineTo(x + r * Math.cos(theta2), y + r * Math.sin(theta2));
+          }
+        }
+        context.stroke();
+      };
+
+      window.onload = () => {
+        const canvas = document.getElementById("mycanvas");
+        const ctx = canvas.getContext("2d");
+        diamond(ctx, 18, 170, 170, 150, "darkblue");
+      };
+    </script>
+  </head>
+  <body>
+    <canvas id="mycanvas" width="1000" height="400"></canvas>
+  </body>
+</html>
