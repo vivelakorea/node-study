@@ -1,30 +1,27 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-
-dotenv.config();
+require('dotenv').config();
 
 const connect = () => {
   if (process.env.NODE_ENV !== 'production') {
     mongoose.set('debug', true);
   }
-  mongoose.connect(`mongodb://gyujang95:${process.env.MONGO_PASSWORD}@localhost:27017/admin`, { // 몽고디비 비밀번호에 @가 포함되면 %40으로 쓴다
-    dbName: 'nodejs',
-    useNewUrlParser: true,
-    useCreateIndex: true,
-  }, (error) => {
-    if (error) {
-      console.log('몽고디비 연결 에러', error);
-    } else {
-      console.log('몽고디비 연결 성공');
-    }
-  });
+  mongoose.connect(`mongodb+srv://ghostman:${process.env.MONGO_PASSWORD}@cluster0.xa9an.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (error) => {
+      if (error) {
+        console.log('mongodb connection error: ', error);
+      } else {
+        console.log('mongodb connection success');
+      }
+    });
 };
 
 mongoose.connection.on('error', (error) => {
-  console.error('몽고디비 연결 에러', error);
+  console.error('mongodb connection error: ', error);
 });
-mongoose.connection.on('disconnected', () => {
-  console.error('몽고디비 연결이 끊겼습니다. 연결을 재시도합니다.');
+
+mongoose.connection.on('disconnected', (error) => {
+  console.error('mongodb disconnected, reconnecting: ', error);
   connect();
 });
 
